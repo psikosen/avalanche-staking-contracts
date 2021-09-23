@@ -13,3 +13,10 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+.idea
+node_modules
+build
+flatten/*.sol
+coverage
+coverage.json
+.DS_Store
