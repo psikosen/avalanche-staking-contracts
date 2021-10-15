@@ -192,19 +192,19 @@ contract('SteakBank Contract', (accounts) => {
         await lavaxInst.approve(SteakBank.address, web3.utils.toBN("1998000000000000000"), {from: player1})
         let unstakeTx0 = await steakBankInst.unstake(web3.utils.toBN("1998000000000000000"), {from: player1});
         truffleAssert.eventEmitted(unstakeTx0, "LogUnstake",(ev) => {
-            return ev.staker.toLowerCase() === player1.toLowerCase() && ev.lavaxAmount.toString() === "1997001000000000000" && ev.avaxAmount.toString() === "2178629100000000000" && ev.index.toNumber() === 1;
+            return ev.staker.toLowerCase() === player1.toLowerCase() && ev.lavaxAmount.toString() === "1997001000000000000" && ev.avaxAmount.toString() === "2178629107648434000" && ev.index.toNumber() === 1;
         });
 
         await lavaxInst.approve(SteakBank.address, web3.utils.toBN("2497500000000000000"), {from: player2})
         let unstakeTx1 = await steakBankInst.unstake(web3.utils.toBN("2497500000000000000"), {from: player2});
         truffleAssert.eventEmitted(unstakeTx1, "LogUnstake",(ev) => {
-            return ev.staker.toLowerCase() === player2.toLowerCase() && ev.lavaxAmount.toString() === "2496251250000000000" && ev.avaxAmount.toString() === "2723286380000000000" && ev.index.toNumber() === 2;
+            return ev.staker.toLowerCase() === player2.toLowerCase() && ev.lavaxAmount.toString() === "2496251250000000000" && ev.avaxAmount.toString() === "2723286384560542500" && ev.index.toNumber() === 2;
         });
 
         await lavaxInst.approve(SteakBank.address, web3.utils.toBN("2997000000000000000"), {from: player3})
         let unstakeTx2 = await steakBankInst.unstake(web3.utils.toBN("2997000000000000000"), {from: player3});
         truffleAssert.eventEmitted(unstakeTx2, "LogUnstake",(ev) => {
-            return ev.staker.toLowerCase() === player3.toLowerCase() && ev.lavaxAmount.toString() === "2995501500000000000" && ev.avaxAmount.toString() === "3267943660000000000" && ev.index.toNumber() === 3;
+            return ev.staker.toLowerCase() === player3.toLowerCase() && ev.lavaxAmount.toString() === "2995501500000000000" && ev.avaxAmount.toString() === "3267943661472651000" && ev.index.toNumber() === 3;
         });
 
         const headerIdx = await steakBankInst.headerIdx();
@@ -250,7 +250,7 @@ contract('SteakBank Contract', (accounts) => {
         await steakBankInst.setPriceToAccelerateUnstake(10, {from: initialGov});
         const newEstimateResult = await steakBankInst.estimateSBFCostForAccelerate(3, 2);
         const requiredSBFAmount = newEstimateResult[1];
-        assert.equal(web3.utils.toBN(requiredSBFAmount).mul(web3.utils.toBN(10)).toString(), costSBFAmount.toString(), "wrong priceToAccelerateUnstake");
+        assert.equal(web3.utils.toBN(requiredSBFAmount).toString(), costSBFAmount.div(web3.utils.toBN(10)).toString(), "wrong priceToAccelerateUnstake");
 
         const sbfInst = await SBF.deployed();
         await sbfInst.transfer(player3, requiredSBFAmount, {from: initialGov});
@@ -288,9 +288,9 @@ contract('SteakBank Contract', (accounts) => {
         const afterClaimUnstakePlayer1 = await web3.eth.getBalance(player1);
         const afterClaimUnstakePlayer2 = await web3.eth.getBalance(player2);
         const afterClaimUnstakePlayer3 = await web3.eth.getBalance(player3);
-        assert.equal(web3.utils.toBN(afterClaimUnstakePlayer1).sub(web3.utils.toBN(beforeClaimUnstakePlayer1)).toString(), "2178629100000000000", "wrong claimed unstake amount");
-        assert.equal(web3.utils.toBN(afterClaimUnstakePlayer2).sub(web3.utils.toBN(beforeClaimUnstakePlayer2)).toString(), "2723286380000000000", "wrong claimed unstake amount");
-        assert.equal(web3.utils.toBN(afterClaimUnstakePlayer3).sub(web3.utils.toBN(beforeClaimUnstakePlayer3)).toString(), "3267943660000000000", "wrong claimed unstake amount");
+        assert.equal(web3.utils.toBN(afterClaimUnstakePlayer1).sub(web3.utils.toBN(beforeClaimUnstakePlayer1)).toString(), "2178629107648434000", "wrong claimed unstake amount");
+        assert.equal(web3.utils.toBN(afterClaimUnstakePlayer2).sub(web3.utils.toBN(beforeClaimUnstakePlayer2)).toString(), "2723286384560542500", "wrong claimed unstake amount");
+        assert.equal(web3.utils.toBN(afterClaimUnstakePlayer3).sub(web3.utils.toBN(beforeClaimUnstakePlayer3)).toString(), "3267943661472651000", "wrong claimed unstake amount");
     });
     it('Test resendAVAXToBCStakingTSS', async () => {
         deployerAccount = accounts[0];

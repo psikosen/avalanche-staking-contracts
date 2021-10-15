@@ -225,7 +225,6 @@ contract SteakBankImpl is Context, Initializable, ReentrancyGuard {
         IMintBurnToken(LAVAX).burn(unstakeAmount);
 
         uint256 avaxAmount = unstakeAmount.mul(lavaxToAVAXExchangeRate).div(EXCHANGE_RATE_PRECISION);
-        avaxAmount = avaxAmount.sub(avaxAmount.mod(1e10));
         lavaxMarketCapacityCountByAVAX = lavaxMarketCapacityCountByAVAX.sub(avaxAmount);
         unstakesMap[tailIdx] = Unstake({
             staker: msg.sender,
